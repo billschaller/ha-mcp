@@ -1,6 +1,6 @@
-name: "Home Assistant MCP Server"
+name: "HA-MCP (teamscha fork)"
 description: "AI assistant integration for Home Assistant via Model Context Protocol (MCP)"
-version: "9.1.2"
+version: "9.2.0-teamscha.1"
 slug: "ha_mcp"
 url: "https://github.com/homeassistant-ai/ha-mcp"
 arch:
@@ -27,18 +27,15 @@ hassio_api: true
 # `manager` (not `default`) is required so the Supervisor token grants access
 # to /addons/<slug>/logs and /<service>/logs (system service logs). Verified
 # via live test — `default` returns 403 for both. See #1116.
-hassio_role: manager
+hassio_role: default
 # Announces this server to Home Assistant's Model Context Protocol
 # integration (Core 2026.10+); src/ha_mcp/app_discovery.py posts the URL to
 # /discovery when the server starts.
-discovery:
-  - mcp
 # Enable access to Home Assistant API
 homeassistant_api: true
 # Enable host network mode for local network access
-host_network: true
+host_network: false
 # Use pre-built Docker images
-image: "ghcr.io/homeassistant-ai/ha-mcp-addon-{arch}"
 # options and schema are generated from ha_mcp.config_settings by
 # scripts/generate_app_options.py. Do not edit them here.
 options:
@@ -50,7 +47,7 @@ options:
   enable_tool_security_policies: false
   enable_security_policy_tool: false
   read_only_mode: false
-  redact_secrets: false
+  redact_secrets: true
   redact_app_option_keys: ""
   ipv6_allowed_networks: ""
   enable_mandatory_bps: true
@@ -62,7 +59,7 @@ options:
   backup_read_only: false
   enable_snapshot_delete: false
   snapshot_delete_min_age_days: 7
-  disabled_tools: ""
+  disabled_tools: "ha_manage_app"
   pinned_tools: ""
 schema:
   verify_ssl: bool?
@@ -90,4 +87,4 @@ schema:
   secret_path: str?
 # Add-on exposes HTTP port for MCP communication (fixed internal port)
 ports:
-  9583/tcp: 9583
+  9583/tcp: null
